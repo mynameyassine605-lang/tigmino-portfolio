@@ -22,11 +22,11 @@
   background: var(--coral);
   color: #0D0D0F;
   border: 1px solid var(--coral);
-  box-shadow: 0 0 24px rgba(255,90,78,0.25);
+  box-shadow: 0 0 24px rgba(249,134,3,0.25);
 }
 .hero__ctas .btn--solid:hover {
-  background: #ff7166;
-  box-shadow: 0 0 36px rgba(255,90,78,0.45);
+  background: #f98603;
+  box-shadow: 0 0 36px rgba(249,134,3,0.45);
   transform: translateY(-2px);
 }
 .hero__ctas .btn--ghost {
@@ -119,7 +119,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 90%, rgba(255,90,78,0.07) 0%, transparent 68%);
+  background: radial-gradient(circle at 50% 90%, rgba(249,134,3,0.07) 0%, transparent 68%);
   opacity: 0;
   transition: opacity 0.55s var(--ease);
   z-index: 1;
@@ -192,7 +192,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 0% 0%, rgba(255,90,78,0.05) 0%, transparent 65%);
+  background: radial-gradient(circle at 0% 0%, rgba(249,134,3,0.05) 0%, transparent 65%);
   opacity: 0;
   transition: opacity 0.4s var(--ease);
 }
@@ -269,7 +269,7 @@
   transform: translateY(-3px);
 }
 .skill-ring:hover .skill-ring__fill {
-  filter: drop-shadow(0 0 7px rgba(255,90,78,0.55));
+  filter: drop-shadow(0 0 7px rgba(249,134,3,0.55));
 }
 .skill-ring__label {
   font-size: 11.5px;
@@ -307,7 +307,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 0% 100%, rgba(255,90,78,0.07) 0%, transparent 65%);
+  background: radial-gradient(circle at 0% 100%, rgba(249,134,3,0.07) 0%, transparent 65%);
   opacity: 0;
   transition: opacity 0.4s var(--ease);
 }
@@ -380,9 +380,9 @@
   transform: scaleY(1);
 }
 .timeline-item__card:hover {
-  border-color: rgba(255,90,78,0.28);
+  border-color: rgba(249,134,3,0.28);
   transform: translateY(-3px);
-  box-shadow: 0 20px 48px -20px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,90,78,0.08);
+  box-shadow: 0 20px 48px -20px rgba(0,0,0,0.6), 0 0 0 1px rgba(249,134,3,0.08);
 }
 
 .timeline-item__role {
@@ -412,7 +412,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 50% 50%, rgba(255,90,78,0.05) 0%, transparent 68%);
+  background: radial-gradient(ellipse at 50% 50%, rgba(249,134,3,0.05) 0%, transparent 68%);
   pointer-events: none;
 }
 .quote__mark {
@@ -449,7 +449,7 @@
   transform: translateX(-50%);
   width: 700px;
   height: 700px;
-  background: radial-gradient(circle, rgba(255,90,78,0.055) 0%, transparent 65%);
+  background: radial-gradient(circle, rgba(249,134,3,0.055) 0%, transparent 65%);
   pointer-events: none;
 }
 .contact h2 {
@@ -466,12 +466,12 @@
   font-size: clamp(18px, 2.6vw, 26px);
   letter-spacing: -0.01em;
   padding-bottom: 10px;
-  border-bottom: 1px solid rgba(255,90,78,0.25);
+  border-bottom: 1px solid rgba(249,134,3,0.25);
   transition: border-color 0.3s, color 0.3s;
   margin-bottom: 60px;
 }
 .contact__email:hover {
-  color: #ff7166;
+  color: #f98603;
   border-color: var(--coral);
 }
 .contact__links {
@@ -596,7 +596,7 @@
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(255,90,78,0.4); }
+::-webkit-scrollbar-thumb:hover { background: rgba(249,134,3,0.4); }
 
 /* ─────────────────────────────────────────────
    SELECTION
@@ -646,7 +646,7 @@
 }
 .cursor-ring {
   width: 34px; height: 34px;
-  border: 1.5px solid rgba(255,90,78,0.55);
+  border: 1.5px solid rgba(249,134,3,0.55);
   border-radius: 50%;
   position: fixed;
   top: 0; left: 0;
@@ -663,17 +663,17 @@
 .cursor-ring.is-link {
   width: 56px; height: 56px;
   border-color: var(--coral);
-  background: rgba(255,90,78,0.07);
+  background: rgba(249,134,3,0.07);
 }
 .cursor-ring.is-view {
   width: 80px; height: 80px;
   border-color: var(--coral);
-  background: rgba(255,90,78,0.06);
+  background: rgba(249,134,3,0.06);
   mix-blend-mode: normal;
 }
 .cursor-ring.is-text {
   width: 44px; height: 44px;
-  border-color: rgba(255,90,78,0.3);
+  border-color: rgba(249,134,3,0.3);
 }
 .cursor-ring.is-click {
   transform: translate(calc(var(--rx, 0px) - 50%), calc(var(--ry, 0px) - 50%)) scale(0.82) !important;

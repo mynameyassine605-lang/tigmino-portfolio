@@ -118,28 +118,36 @@ document.addEventListener('DOMContentLoaded', () => {
         ? `<div class="explorer__video-wrap">
     <video src="${src}" autoplay loop muted playsinline class="explorer__video"></video>
     <div class="explorer__video-controls">
+      <button class="explorer__play-btn" aria-label="Pause video">
+        <svg class="icon-pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+          <rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>
+        </svg>
+        <svg class="icon-play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="display:none">
+          <polygon points="5 3 19 12 5 21 5 3"/>
+        </svg>
+      </button>
+      <span class="explorer__timer explorer__timer--current">0:00</span>
+      <div class="explorer__progress">
+        <div class="explorer__progress-fill"></div>
+        <div class="explorer__progress-thumb"></div>
+      </div>
+      <span class="explorer__timer explorer__timer--duration">0:00</span>
       <button class="explorer__sound-btn" aria-label="Unmute video">
-        <svg class="icon-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg class="icon-muted" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
           <line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
         </svg>
-        <svg class="icon-unmuted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+        <svg class="icon-unmuted" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
           <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
           <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
         </svg>
       </button>
-      <div class="explorer__progress">
-        <div class="explorer__progress-fill"></div>
+      <div class="explorer__speed-btns">
+        <button class="explorer__speed-btn" data-speed="0.5">0.5x</button>
+        <button class="explorer__speed-btn is-active" data-speed="1">1x</button>
+        <button class="explorer__speed-btn" data-speed="1.5">1.5x</button>
+        <button class="explorer__speed-btn" data-speed="2">2x</button>
       </div>
-      <span class="explorer__timer">0:00</span>
-      <button class="explorer__play-btn" aria-label="Pause video">
-        <svg class="icon-pause" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-          <rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>
-        </svg>
-        <svg class="icon-play" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="display:none">
-          <polygon points="5 3 19 12 5 21 5 3"/>
-        </svg>
-      </button>
     </div>
   </div>`
         : `<img src="${src}" alt="${project.name} — image ${i + 1}" loading="lazy" decoding="async">`;
@@ -274,35 +282,56 @@ document.addEventListener('DOMContentLoaded', () => {
           // });
           // video controls (sound + progress + play/pause + timer)
 contentEl.querySelectorAll('.explorer__video-wrap').forEach(wrap => {
-  const video    = wrap.querySelector('video');
-  const soundBtn = wrap.querySelector('.explorer__sound-btn');
-  const playBtn  = wrap.querySelector('.explorer__play-btn');
-  const progress = wrap.querySelector('.explorer__progress');
-  const fill     = wrap.querySelector('.explorer__progress-fill');
-  const timer    = wrap.querySelector('.explorer__timer');
+  const video       = wrap.querySelector('video');
+  const soundBtn    = wrap.querySelector('.explorer__sound-btn');
+  const playBtn     = wrap.querySelector('.explorer__play-btn');
+  const progress    = wrap.querySelector('.explorer__progress');
+  const fill        = wrap.querySelector('.explorer__progress-fill');
+  const thumb       = wrap.querySelector('.explorer__progress-thumb');
+  const timerCur    = wrap.querySelector('.explorer__timer--current');
+  const timerDur    = wrap.querySelector('.explorer__timer--duration');
+  const speedBtns   = wrap.querySelectorAll('.explorer__speed-btn');
 
-  // format seconds to m:ss
   function fmt(s) {
+    if (isNaN(s)) return '0:00';
     const m = Math.floor(s / 60);
     const sec = Math.floor(s % 60);
     return `${m}:${sec.toString().padStart(2, '0')}`;
   }
 
-  // update progress bar + timer every frame
+  // set duration once metadata loads
+  video.addEventListener('loadedmetadata', () => {
+    if (timerDur) timerDur.textContent = fmt(video.duration);
+  });
+  if (video.readyState >= 1 && timerDur) timerDur.textContent = fmt(video.duration);
+
+  // update progress + current time
   video.addEventListener('timeupdate', () => {
     if (!video.duration) return;
     const pct = (video.currentTime / video.duration) * 100;
-    fill.style.width = pct + '%';
-    timer.textContent = fmt(video.currentTime);
+    if (fill)  fill.style.width = pct + '%';
+    if (thumb) thumb.style.left = pct + '%';
+    if (timerCur) timerCur.textContent = fmt(video.currentTime);
   });
 
-  // click progress bar to seek
+  // seek on click
   progress.addEventListener('click', e => {
     e.stopPropagation();
     const rect = progress.getBoundingClientRect();
-    const pct  = (e.clientX - rect.left) / rect.width;
+    const pct  = Math.min(Math.max((e.clientX - rect.left) / rect.width, 0), 1);
     video.currentTime = pct * video.duration;
   });
+
+  // drag to seek
+  let dragging = false;
+  progress.addEventListener('mousedown', e => { dragging = true; e.stopPropagation(); });
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    const rect = progress.getBoundingClientRect();
+    const pct  = Math.min(Math.max((e.clientX - rect.left) / rect.width, 0), 1);
+    video.currentTime = pct * video.duration;
+  });
+  document.addEventListener('mouseup', () => { dragging = false; });
 
   // sound toggle
   soundBtn.addEventListener('click', e => {
@@ -329,6 +358,16 @@ contentEl.querySelectorAll('.explorer__video-wrap').forEach(wrap => {
       playBtn.querySelector('.icon-play').style.display  = '';
       playBtn.setAttribute('aria-label', 'Play video');
     }
+  });
+
+  // speed buttons
+  speedBtns.forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      video.playbackRate = parseFloat(btn.dataset.speed);
+      speedBtns.forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+    });
   });
 });
     // gallery item click + keyboard
@@ -553,78 +592,87 @@ function closeLightbox() {
   //   // keep body locked since explorer is still open
   // }
 function initLightboxControls() {
-    // only relevant for videos
-    const isVideo = /\.mp4$/i.test(galleryImages[lbIndex]);
-    const ctrl = document.getElementById('lbControls');
-    if (!isVideo) { if (ctrl) ctrl.style.display = 'none'; return; }
-    if (ctrl) ctrl.style.display = 'flex';
+  const isVideo = /\.mp4$/i.test(galleryImages[lbIndex]);
+  const ctrl = document.getElementById('lbControls');
+  if (!isVideo) { if (ctrl) ctrl.style.display = 'none'; return; }
+  if (ctrl) ctrl.style.display = 'flex';
 
-    const video    = lightboxVideo;
-    const fill     = document.getElementById('lbFill');
-    const timer    = document.getElementById('lbTimer');
-    const soundBtn = document.getElementById('lbSound');
-    const playBtn  = document.getElementById('lbPlay');
+  const video     = lightboxVideo;
+  const fill      = document.getElementById('lbFill');
+  const thumb     = document.getElementById('lbThumb');
+  const timerCur  = document.getElementById('lbTimerCur');
+  const timerDur  = document.getElementById('lbTimerDur');
+  const soundBtn  = document.getElementById('lbSound');
+  const playBtn   = document.getElementById('lbPlay');
+  const progress  = document.getElementById('lbProgress');
 
-    // reset muted state
-    video.muted = true;
-    soundBtn.querySelector('.lb-icon-muted').style.display   = '';
-    soundBtn.querySelector('.lb-icon-unmuted').style.display = 'none';
-    soundBtn.classList.remove('is-unmuted');
-
-    // reset play state
-    video.play();
-    playBtn.querySelector('.lb-icon-pause').style.display = '';
-    playBtn.querySelector('.lb-icon-play').style.display  = 'none';
-
-    function fmt(s) {
-      const m = Math.floor(s / 60);
-      return `${m}:${Math.floor(s % 60).toString().padStart(2,'0')}`;
-    }
-
-    // remove old listeners by cloning
-    const newSound = soundBtn.cloneNode(true);
-    const newPlay  = playBtn.cloneNode(true);
-    const newFill  = fill.parentElement;
-    soundBtn.replaceWith(newSound);
-    playBtn.replaceWith(newPlay);
-
-    // timeupdate
-    video.ontimeupdate = () => {
-      if (!video.duration) return;
-      document.getElementById('lbFill').style.width = (video.currentTime / video.duration * 100) + '%';
-      document.getElementById('lbTimer').textContent = fmt(video.currentTime);
-    };
-
-    // seek
-    document.getElementById('lbProgress').onclick = e => {
-      e.stopPropagation();
-      const r = e.currentTarget.getBoundingClientRect();
-      video.currentTime = ((e.clientX - r.left) / r.width) * video.duration;
-    };
-
-    // sound
-    document.getElementById('lbSound').addEventListener('click', e => {
-      e.stopPropagation();
-      video.muted = !video.muted;
-      document.getElementById('lbSound').querySelector('.lb-icon-muted').style.display   = video.muted ? '' : 'none';
-      document.getElementById('lbSound').querySelector('.lb-icon-unmuted').style.display = video.muted ? 'none' : '';
-      document.getElementById('lbSound').classList.toggle('is-unmuted', !video.muted);
-    });
-
-    // play/pause
-    document.getElementById('lbPlay').addEventListener('click', e => {
-      e.stopPropagation();
-      if (video.paused) {
-        video.play();
-        document.getElementById('lbPlay').querySelector('.lb-icon-pause').style.display = '';
-        document.getElementById('lbPlay').querySelector('.lb-icon-play').style.display  = 'none';
-      } else {
-        video.pause();
-        document.getElementById('lbPlay').querySelector('.lb-icon-pause').style.display = 'none';
-        document.getElementById('lbPlay').querySelector('.lb-icon-play').style.display  = '';
-      }
-    });
+  function fmt(s) {
+    if (isNaN(s)) return '0:00';
+    return `${Math.floor(s/60)}:${Math.floor(s%60).toString().padStart(2,'0')}`;
   }
+
+  video.muted = true;
+  video.playbackRate = 1;
+  soundBtn.querySelector('.lb-icon-muted').style.display   = '';
+  soundBtn.querySelector('.lb-icon-unmuted').style.display = 'none';
+  soundBtn.classList.remove('is-unmuted');
+  ctrl.querySelectorAll('.lb-speed-btn').forEach(b => b.classList.toggle('is-active', b.dataset.speed === '1'));
+
+  video.play();
+  playBtn.querySelector('.lb-icon-pause').style.display = '';
+  playBtn.querySelector('.lb-icon-play').style.display  = 'none';
+
+  const setDur = () => { if (timerDur) timerDur.textContent = fmt(video.duration); };
+  if (video.readyState >= 1) setDur();
+  else video.addEventListener('loadedmetadata', setDur, { once: true });
+
+  soundBtn.replaceWith(soundBtn.cloneNode(true));
+  playBtn.replaceWith(playBtn.cloneNode(true));
+
+  video.ontimeupdate = () => {
+    if (!video.duration) return;
+    const pct = (video.currentTime / video.duration) * 100;
+    if (fill)     fill.style.width = pct + '%';
+    if (thumb)    thumb.style.left = pct + '%';
+    if (timerCur) timerCur.textContent = fmt(video.currentTime);
+  };
+
+  if (progress) progress.onclick = e => {
+    e.stopPropagation();
+    const r = progress.getBoundingClientRect();
+    video.currentTime = Math.min(Math.max((e.clientX - r.left) / r.width, 0), 1) * video.duration;
+  };
+
+  document.getElementById('lbSound').addEventListener('click', e => {
+    e.stopPropagation();
+    video.muted = !video.muted;
+    document.getElementById('lbSound').querySelector('.lb-icon-muted').style.display   = video.muted ? '' : 'none';
+    document.getElementById('lbSound').querySelector('.lb-icon-unmuted').style.display = video.muted ? 'none' : '';
+    document.getElementById('lbSound').classList.toggle('is-unmuted', !video.muted);
+  });
+
+  document.getElementById('lbPlay').addEventListener('click', e => {
+    e.stopPropagation();
+    if (video.paused) {
+      video.play();
+      document.getElementById('lbPlay').querySelector('.lb-icon-pause').style.display = '';
+      document.getElementById('lbPlay').querySelector('.lb-icon-play').style.display  = 'none';
+    } else {
+      video.pause();
+      document.getElementById('lbPlay').querySelector('.lb-icon-pause').style.display = 'none';
+      document.getElementById('lbPlay').querySelector('.lb-icon-play').style.display  = '';
+    }
+  });
+
+  ctrl.querySelectorAll('.lb-speed-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      video.playbackRate = parseFloat(btn.dataset.speed);
+      ctrl.querySelectorAll('.lb-speed-btn').forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+    });
+  });
+}
   // function lbNavigate(dir) {
   //   lbIndex = (lbIndex + dir + galleryImages.length) % galleryImages.length;
   //   lightboxCounter.textContent = `${lbIndex + 1} / ${galleryImages.length}`;

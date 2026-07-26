@@ -1,0 +1,78 @@
+/* ============================================================
+   PAGE LOADER — Conveyor Loop style
+   ============================================================ */
+#page-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: #0D0D0F;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+              visibility 0.65s;
+}
+#page-loader.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* logo */
+.loader__logo {
+  height: 52px;
+  width: auto;
+  opacity: 0.9;
+}
+
+/* conveyor track */
+.loader__conveyor {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 18px;
+  color: rgba(255,255,255,0.75);
+  letter-spacing: 0.08em;
+}
+
+.loader__track {
+  display: inline-block;
+  width: 160px;
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  vertical-align: middle;
+}
+
+.loader__track-inner {
+  display: inline-block;
+  white-space: nowrap;
+  /* animation driven by JS */
+}
+
+.loader__label {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 13px;
+  color: rgba(249,134,3,0.9);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* progress bar */
+.loader__bar {
+  width: 160px;
+  height: 2px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.loader__bar-fill {
+  height: 100%;
+  width: 0%;
+  background: #f98603;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}

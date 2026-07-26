@@ -62,7 +62,7 @@
 
 <!-- HERO -->
 <section class="hero" id="top">
-  <canvas id="gridCanvas"></canvas>
+  <canvas id="hillsCanvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;"></canvas>
 
   <div class="hero__kicker" data-reveal>
     <span>Tigmino Creates</span>
@@ -83,10 +83,6 @@
       </div>
     </div>
 
-    <div class="hero__photo">
-      <div class="hero__glow"></div>
-      <img src="img/hero.png" alt="Yassine Ait Elhaj" loading="eager">
-    </div>
   </div>
 
   <div class="hero__footer">
@@ -104,16 +100,16 @@
     </div>
   </div>
 
-  <div class="hero__scroll" data-cursor="link">
+  <!-- <div class="hero__scroll" data-cursor="link">
     <span>Scroll</span>
     <div class="scroll-line"><i></i></div>
-  </div>
+  </div> -->
 </section>
 
 <!-- STATS -->
 <section class="stats-bar" aria-label="Portfolio statistics">
   <div class="stats-bar__inner">
-    <div class="stat-item" data-count="4" data-suffix="+">
+    <div class="stat-item" data-count="3" data-suffix="+">
       <span class="stat-item__num" data-counter>0</span>
       <span class="stat-item__label">Years Experience</span>
     </div>
@@ -148,70 +144,77 @@
 </section>
 
 <!-- WORK / PORTFOLIO -->
-<section class="explore" id="work">
-  <div class="explore__head">
-    <p class="eyebrow" data-reveal>Selected Work</p>
-    <h2 data-reveal>Four years of work.</h2>
+<section class="orgnzm-services" id="work">
+
+  <div class="orgnzm__header">
+    <p class="eyebrow">Selected Work</p>
+    <p class="orgnzm__header-tag">That We Provide</p>
   </div>
 
-  <div class="explore__stage">
-    <div class="explore__bg-type" aria-hidden="true">
-      <span data-reveal>EXPLORE</span>
-      <span data-reveal>WORKS</span>
+  <div class="orgnzm__body">
+
+    <!-- LEFT: description changes per hover -->
+    <div class="orgnzm__desc-col">
+      <div class="orgnzm__desc" data-for="branding">
+        <p>Brand identities built<br>to last a decade.</p>
+      </div>
+      <div class="orgnzm__desc" data-for="social-media">
+        <p>Content that earns<br>attention without<br>begging for it.</p>
+      </div>
+      <div class="orgnzm__desc" data-for="3d-design">
+        <p>Cinematic renders<br>where lighting<br>does the talking.</p>
+      </div>
+      <div class="orgnzm__desc" data-for="video-editing">
+        <p>Cuts and motion<br>that move in every<br>sense of the word.</p>
+      </div>
     </div>
 
-    <div class="explore__cards">
+    <!-- CENTER: giant stacked names -->
+    <div class="orgnzm__list">
 
-    <button class="explore-card" data-cursor="view" data-gsap-card data-open-explorer="branding">
-      <span class="explore-card__num">01</span>
-      <div class="explore-card__media">
-        <img src="img/work/cover1.png" alt="Branding" loading="lazy" decoding="async">
-      </div>
-      <div class="explore-card__info">
-        <h3 class="explore-card__title">Branding</h3>
-        <!-- <p class="explore-card__sub">5 Projects</p> -->
-      </div>
-      <span class="explore-card__arrow" aria-hidden="true">↗</span>
-    </button>
+      <button class="orgnzm__item is-active"
+        data-key="branding"
+        data-open-explorer="branding"
+        data-img="img/work/cover1.png"
+        data-cursor="view">
+        <span class="orgnzm__item-title">Branding</span>
+      </button>
 
-    <button class="explore-card" data-cursor="view" data-gsap-card data-open-explorer="social-media">
-      <span class="explore-card__num">02</span>
-      <div class="explore-card__media">
-        <img src="img/work/cover2.png" alt="Social Media" loading="lazy" decoding="async">
-      </div>
-      <div class="explore-card__info">
-        <h3 class="explore-card__title">Social Media</h3>
-        <!-- <p class="explore-card__sub">6 Projects</p> -->
-      </div>
-      <span class="explore-card__arrow" aria-hidden="true">↗</span>
-    </button>
+      <button class="orgnzm__item"
+        data-key="social-media"
+        data-open-explorer="social-media"
+        data-img="img/work/cover2.png"
+        data-cursor="view">
+        <span class="orgnzm__item-title">Social Media</span>
+      </button>
 
-    <button class="explore-card" data-cursor="view" data-gsap-card data-open-explorer="3d-design">
-      <span class="explore-card__num">03</span>
-      <div class="explore-card__media">
-        <img src="img/work/cover3.png" alt="3D Design" loading="lazy" decoding="async">
-      </div>
-      <div class="explore-card__info">
-        <h3 class="explore-card__title">3D Visuals</h3>
-        <!-- <p class="explore-card__sub">10 Projects</p> -->
-      </div>
-      <span class="explore-card__arrow" aria-hidden="true">↗</span>
-    </button>
+      <button class="orgnzm__item"
+        data-key="3d-design"
+        data-open-explorer="3d-design"
+        data-img="img/work/cover3.png"
+        data-cursor="view">
+        <span class="orgnzm__item-title">3D Visuals</span>
+      </button>
 
-    <button class="explore-card" data-cursor="view" data-gsap-card data-open-explorer="video-editing">
-      <span class="explore-card__num">04</span>
-      <div class="explore-card__media">
-        <img src="img/work/cover4.png" alt="Motion & Video" loading="lazy" decoding="async">
-      </div>
-      <div class="explore-card__info">
-        <h3 class="explore-card__title">Motion &amp; Video</h3>
-        <!-- <p class="explore-card__sub">2 Projects</p> -->
-      </div>
-      <span class="explore-card__arrow" aria-hidden="true">↗</span>
-    </button>
+      <button class="orgnzm__item"
+        data-key="video-editing"
+        data-open-explorer="video-editing"
+        data-img="img/work/cover4.png"
+        data-cursor="view">
+        <span class="orgnzm__item-title">Motion &amp; Video</span>
+      </button>
 
     </div>
+
+    <!-- RIGHT: image panel -->
+    <div class="orgnzm__img-col">
+      <div class="orgnzm__img-frame">
+        <img src="img/work/cover1.png" alt="" id="orgnzmImg" loading="lazy" decoding="async">
+      </div>
+    </div>
+
   </div>
+
 </section>
 
 <!-- PROJECT EXPLORER MODAL -->
@@ -238,31 +241,38 @@
   <video class="lightbox-v2__img" id="lightboxV2Video" src="" autoplay loop muted playsinline style="display:none;max-width:90vw;max-height:82vh;"></video>
 
   <!-- video controls bar — only shown for videos -->
-  <div class="lb-controls" id="lbControls" style="display:none">
-    <button class="lb-btn" id="lbSound" aria-label="Unmute video">
-      <svg class="lb-icon-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-        <line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
-      </svg>
-      <svg class="lb-icon-unmuted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
-        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
-      </svg>
-    </button>
-    <div class="lb-progress" id="lbProgress">
-      <div class="lb-progress-fill" id="lbFill"></div>
-    </div>
-    <span class="lb-timer" id="lbTimer">0:00</span>
-    <button class="lb-btn" id="lbPlay" aria-label="Pause video">
-      <svg class="lb-icon-pause" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-        <rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>
-      </svg>
-      <svg class="lb-icon-play" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="display:none">
-        <polygon points="5 3 19 12 5 21 5 3"/>
-      </svg>
-    </button>
+ <div class="lb-controls" id="lbControls" style="display:none">
+  <button class="lb-btn" id="lbPlay" aria-label="Pause video">
+    <svg class="lb-icon-pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+      <rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>
+    </svg>
+    <svg class="lb-icon-play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="display:none">
+      <polygon points="5 3 19 12 5 21 5 3"/>
+    </svg>
+  </button>
+  <span class="lb-timer" id="lbTimerCur">0:00</span>
+  <div class="lb-progress" id="lbProgress">
+    <div class="lb-progress-fill" id="lbFill"></div>
+    <div class="lb-progress-thumb" id="lbThumb"></div>
   </div>
-
+  <span class="lb-timer" id="lbTimerDur">0:00</span>
+  <button class="lb-btn" id="lbSound" aria-label="Unmute video">
+    <svg class="lb-icon-muted" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+      <line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
+    </svg>
+    <svg class="lb-icon-unmuted" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+    </svg>
+  </button>
+  <div class="lb-speed-btns">
+    <button class="lb-speed-btn" data-speed="0.5">0.5x</button>
+    <button class="lb-speed-btn is-active" data-speed="1">1x</button>
+    <button class="lb-speed-btn" data-speed="1.5">1.5x</button>
+    <button class="lb-speed-btn" data-speed="2">2x</button>
+  </div>
+</div>
   <button class="lightbox-v2__close" id="lightboxV2Close" aria-label="Close">✕</button>
   <button class="lightbox-v2__nav lightbox-v2__prev" id="lightboxV2Prev" aria-label="Previous">‹</button>
   <button class="lightbox-v2__nav lightbox-v2__next" id="lightboxV2Next" aria-label="Next">›</button>
@@ -342,7 +352,7 @@
 
       <div class="about__stats" data-reveal>
         <div class="stat">
-          <span class="stat__num">4+</span>
+          <span class="stat__num">3+</span>
           <span class="stat__label">Years of experience</span>
         </div>
         <div class="stat">
@@ -628,5 +638,7 @@
 <script src="script.js"></script>
 <script src="explorer-data.js"></script>
 <script src="explorer.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="hills.js"></script>
 </body>
 </html>
